@@ -7,5 +7,7 @@ var header=document.getElementById('main-header');
 header.style.borderTop='6px solid blue';
 header.style.borderBottom='6px solid blue';
 var items=document.getElementsByClassName('list-group-item');
-items[0].style.color='green';
-items[0].style.fontWeight='bold';
+items[2].style.color='green';
+for(var i=0;i<items.length;i++){
+    items[i].style.fontWeight='bold';
+}
