@@ -11,3 +11,8 @@ items[2].style.color='green';
 for(var i=0;i<items.length;i++){
     items[i].style.fontWeight='bold';
 }
+var header=document.querySelector("#main-header");
+header.style.borderBottom='violet';
+
+var input=document.querySelector('input');
+input.value="Enter the name";
