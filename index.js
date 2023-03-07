@@ -16,3 +16,8 @@ header.style.borderBottom='violet';
 
 var input=document.querySelector('input');
 input.value="Enter the name";
+
+var item=document.querySelector('li:nth-child(2)')
+item.style.color='green';
+var item3=document.querySelector('li:nth-child(3)')
+item.style.visibility='hidden';
