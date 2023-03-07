@@ -6,4 +6,6 @@ var headerTitle=document.getElementById('header-title');
 var header=document.getElementById('main-header');
 header.style.borderTop='6px solid blue';
 header.style.borderBottom='6px solid blue';
-  
+var items=document.getElementsByClassName('list-group-item');
+items[0].style.color='green';
+items[0].style.fontWeight='bold';
