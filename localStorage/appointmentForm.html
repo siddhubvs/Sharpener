@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: orange;
+            text-align: center;
+        }
+
+        form{
+            background-color: white;
+            align-items: center;
+            display: inline-block;
+            width: 50%;
+        }
+        button{
+            background-color: orange;
+        }
+        h1{
+            background-color:white;
+            color:orange;
+        }
+    </style>
+</head>
+<body>
+    
+        <div>
+        <form action="" onsubmit="print(event)">
+            <h1>Book a Call</h1>
+            <label>Name:</label><br>
+            <input type="text" name="name" class="form-control"><br><br>
+            <label>Email:</label><br>
+            <input type="text" name="email" class="form-control"><br><br>
+            <label>Phone:</label><br>
+            <input type="number" name="number" class="form-control"><br><br>
+            <label>Time for Call:</label><br>
+            <input type="date" name="date" >&nbsp;
+            <input type="time" name="time" value="11:00" ><br><br>
+            <button name="submit">Get a Call</button>
+
+
+        </form>
+    </div>
+    <script>
+        function print(event){
+            event.preventDefault();
+            console.log(event.target.name.value);
+            console.log(event.target.email.value);
+            console.log(event.target.number.value);
+            console.log(event.target.date.value);
+            console.log(event.target.time.value);
+            let obj={
+                name:event.target.name.value,
+                email:event.target.email.value,
+                number:event.target.number.value,
+                date:event.target.date.value,
+                time:event.target.time.value
+            }
+            let myobj=JSON.stringify(obj);
+            localStorage.setItem('user',myobj)
+            /*localStorage.setItem('name',event.target.name.value);
+            localStorage.setItem('email',event.target.email.value);
+            localStorage.setItem('number',event.target.number.value);
+            localStorage.setItem('date',event.target.date.value);
+            localStorage.setItem('time',event.target.time.value);*/
+        }
+       
+    </script>
+</body>
+</html>
