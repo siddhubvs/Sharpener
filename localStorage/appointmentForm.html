@@ -66,17 +66,33 @@
             let myobj=JSON.stringify(obj);
             
             var li=document.createElement('li');
+            
             li.textContent=obj.name+' - ' + obj.email+' - '+obj.number+' - '+obj.date+' - '+obj.time;
+            var deletebtn=document.createElement('button');
+            deletebtn.className='btn btn-primary';
+            deletebtn.textContent='Delete'
+            deletebtn.width='100%'
+            
+            li.appendChild(deletebtn);
             var sid=document.getElementById('sid');
             var h2=document.getElementById('end');
             sid.insertBefore(li,h2);
            
             localStorage.setItem(obj.email,myobj);
-            /*localStorage.setItem('name',event.target.name.value);
-            localStorage.setItem('email',event.target.email.value);
-            localStorage.setItem('number',event.target.number.value);
-            localStorage.setItem('date',event.target.date.value);
-            localStorage.setItem('time',event.target.time.value);*/
+              
+            li.addEventListener('click',removeItem);
+            function removeItem(e){
+                e.preventDefault();
+                if(e.target.classList.contains('btn')){
+                    if(confirm('Are you sure to delete')){
+                        var li=e.target.parentElement;
+                        li.remove(li);
+                        localStorage.removeItem(obj.email);
+                    }
+                }
+            }
+        
+           
         }
        
     </script>
