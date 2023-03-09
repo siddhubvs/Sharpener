@@ -16,7 +16,7 @@
             background-color: white;
             align-items: center;
             display: inline-block;
-            width: 50%;
+            width: 90%;
         }
         button{
             background-color: orange;
@@ -29,8 +29,8 @@
 </head>
 <body>
     
-        <div>
-        <form action="" onsubmit="print(event)">
+        <div id="sid">
+        <form action="" onsubmit="print(event)" id="form1">
             <h1>Book a Call</h1>
             <label>Name:</label><br>
             <input type="text" name="name" class="form-control"><br><br>
@@ -42,18 +42,20 @@
             <input type="date" name="date" >&nbsp;
             <input type="time" name="time" value="11:00" ><br><br>
             <button name="submit">Get a Call</button>
-
+        
 
         </form>
+        <h1 id="details">Form Details</h1>
+        <h1 id="end">End of form</h1>
     </div>
     <script>
         function print(event){
             event.preventDefault();
-            console.log(event.target.name.value);
-            console.log(event.target.email.value);
-            console.log(event.target.number.value);
-            console.log(event.target.date.value);
-            console.log(event.target.time.value);
+            
+            
+            var li=document.createElement('li')
+            
+           
             let obj={
                 name:event.target.name.value,
                 email:event.target.email.value,
@@ -62,7 +64,14 @@
                 time:event.target.time.value
             }
             let myobj=JSON.stringify(obj);
-            localStorage.setItem('user',myobj)
+            
+            var li=document.createElement('li');
+            li.textContent=obj.name+' - ' + obj.email+' - '+obj.number+' - '+obj.date+' - '+obj.time;
+            var sid=document.getElementById('sid');
+            var h2=document.getElementById('end');
+            sid.insertBefore(li,h2);
+           
+            localStorage.setItem(obj.email,myobj);
             /*localStorage.setItem('name',event.target.name.value);
             localStorage.setItem('email',event.target.email.value);
             localStorage.setItem('number',event.target.number.value);
