@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Expense Tracker</title>
+    <style>
+        body{
+            background-color:white;
+            text-align: center;
+        }
+
+        form{
+            background-color:yellow;
+            align-items: center;
+            display: inline-block;
+            width: 60%;
+            
+        }
+        button{
+            background-color: orange;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Expense Tracker Project</h1>
+    <div id="tracker">
+    <form id="form1" onsubmit="print(event)">
+        <h1>Expense Tracker Form</h1>
+        <label>Enter expense amount: </label>
+        <input type="text" id="amount" name="amount" class="form-control"><br><br>
+        <label>Enter description: </label>
+        <input type="text" id="description" name="description" class="form-control"><br><br>
+        <label>Choose a category: </label>
+        <select class="form-select form-select-lg" id="category" name="category">
+            <option>Fuel</option>
+            <option>Food</option>
+            <option>Electricity</option>
+            <option>Movie</option>
+          </select><br><br>
+        <button name="submit" class="btn btn-primary">Add Expense</button>
+        
+    </form>
+    <h1 style="color:yellow">Expense Details</h1>
+    <h1 id="end" style="color:yellow">End of details</h1>
+    </div>
+    <script>
+        function print(event){
+            event.preventDefault();
+            
+            let obj={
+                amount:event.target.amount.value,
+                description:event.target.description.value,
+                category:event.target.category.value,
+            }
+            let myobj=JSON.stringify(obj);
+            localStorage.setItem(obj.amount,myobj);
+            var li=document.createElement('li');
+            li.className='list-group-item'
+            li.style.color='blue';
+            li.style.fontSize='20px';
+            li.textContent=obj.amount+' - ' + obj.description+' - '+obj.category+'  '+ '   ';
+
+            var deletebtn=document.createElement('button');
+            deletebtn.className='btn btn-primary';
+            deletebtn.textContent='Delete'
+            deletebtn.width='100%'
+            deletebtn.onclick=(e)=>{
+                if(confirm('Are you sure to delete')){
+                        var li=e.target.parentElement;
+                        li.remove();
+                        localStorage.removeItem(obj.amount);
+                }
+            }
+
+            var editbtn=document.createElement('button');
+            editbtn.className='btn btn-primary';
+            editbtn.textContent='Edit'
+            editbtn.width='100%'
+            editbtn.onclick=(e)=>{
+                if(confirm('Are you sure to edit')){
+                        li.remove();
+                        localStorage.removeItem(obj.amount);
+                        document.getElementById('amount').value=obj.amount;
+                        document.getElementById('description').value=obj.description;
+                        document.getElementById('category').value=obj.category;
+            
+
+                }
+            }
+
+            li.appendChild(deletebtn);
+            li.appendChild(editbtn);
+            
+            var div=document.getElementById("tracker")
+            var h1=document.getElementById("end");
+            div.insertBefore(li,h1)
+
+        }
+    </script>
+    
+</body>
+</html>
