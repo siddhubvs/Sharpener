@@ -11,22 +11,21 @@ let showstatus=async()=>{
     let create2=await create2ndpost;
     console.log(create2);
     
-    
     const create3rdpost= new Promise((resolve,reject)=>{
         var count=0;
         setTimeout(()=>{
             posts.push({title:"POST3",body:"This is post3"})
-            count++;
-            resolve(count);
+            resolve('Created post3')
         },1000);
     })
+    
     
     
     let create3 = await  create3rdpost;
     console.log(create3);
     
-    
-    var deletepost=new Promise((resolve,reject)=>{
+    function deletepost(){
+    return new Promise((resolve,reject)=>{
         setTimeout(()=>{
             if(posts.length>0)
             resolve(posts.pop())
@@ -34,11 +33,20 @@ let showstatus=async()=>{
             reject('Array empty');
         },1000);
     })
+    }
+    var delete1=await deletepost();
+    console.log(delete1)
     
-    var delete1= await deletepost;
-    console.log(delete1);
+    var delete2=await deletepost();
+    console.log(delete2)
     
-    var delete2= await deletepost;
-    console.log(delete2);
+    var delete3=await deletepost();
+    console.log(delete3)
+    
+    try{
+    var delete4=await deletepost();
+    }catch(e){
+    console.log(e);
+    }
 }
 showstatus();   
