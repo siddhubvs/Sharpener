@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Seller Admin Page</title>
+    <style>
+        body{
+             text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Seller Admin Page</h1><br><br>
+    <form action='' onsubmit="print(event)">
+        <label>Selling Price : </label>
+        <input type="text" id="selling" name="selling">&nbsp;&nbsp;
+        <label>Product Name : </label>
+        <input type="text" id="product" name="product">&nbsp;&nbsp;
+        <label>Choose a category : </label>
+        <select id="category" name="category" value=" ">
+            <option value="none" selected disabled hidden>Select an Option</option>
+            <option>Electronics</option>
+            <option>Food</option>
+            <option>SkinCare</option>
+        </select>&nbsp;&nbsp;
+        <button name="addProduct" class="btn btn-primary">Add Product</button>
+    </form><br><br>
+    
+    <div id="Products"><b><h1>Products</h2></b><br>
+        <div id="Electronics"><b><h3>Electronic Items</h3></b></div>
+        <div id="Food"><b><h3>Food Items</h3></b></div>
+        <div id="Skincare"><b><h3>SkinCare Items</h3></b></div>
+        <div id="End"><b><h3>End of details</h3></b></div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        
+        window.addEventListener('DOMContentLoaded',()=>{
+            axios.get('https://crudcrud.com/api/d9d6028b7fae496c91f1306a3d78a221/admindata')
+            .then((response)=>{
+                console.log(response.data);
+                for(var i=0;i<response.data.length;i++){
+                    showNewUser(response.data[i]);
+                }
+            })
+            .catch(err=>console.log(err));
+        })
+
+
+        function print(e){
+            e.preventDefault();
+            let obj={
+                selling:e.target.selling.value,
+                product:e.target.product.value,
+                category:e.target.category.value,
+            }
+            axios.post('https://crudcrud.com/api/d9d6028b7fae496c91f1306a3d78a221/admindata',obj).
+            then(res=>{
+               showNewUser(res.data);
+               console.log(res.data);
+            })
+            .catch(err=>console.err(err));
+        }
+
+        var product=document.getElementById('Products');
+        var electronics=document.getElementById('Electronics');
+        var food=document.getElementById('Food');
+        var skincare=document.getElementById('Skincare');
+        var end=document.getElementById('End');
+        
+        
+        function showNewUser(obj){
+            var li=document.createElement('li');
+            li.style.fontSize='25px';
+            li.textContent=obj.selling+' - '+obj.product+' - '+obj.category+' '+' ';
+            
+            var deletebtn=document.createElement('button');
+            deletebtn.className='btn btn-primary';
+            deletebtn.textContent='Delete';
+            //deletebtn.style.width='20%'
+            deletebtn.onclick=(e)=>{
+                if(confirm('Are you sure to delete')){
+                    var li=e.target.parentElement;
+                    li.remove();
+                    axios.delete(`https://crudcrud.com/api/d9d6028b7fae496c91f1306a3d78a221/admindata/${obj._id}`)
+                    .then(res=>console.log('deleted data'))
+                    .catch(err=>console.log(err));
+                }
+            }
+            li.appendChild(deletebtn);
+            
+            if(obj.category==='Electronics')
+            product.insertBefore(li,food);
+            else if(obj.category==='Food')
+            product.insertBefore(li,skincare);
+            else if(obj.category==='SkinCare')
+            product.insertBefore(li,end);
+        }
+    </script>
+</body>
+</html>
