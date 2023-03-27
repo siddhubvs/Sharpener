@@ -4,15 +4,10 @@ const router=express.Router();
 
 const path=require('path');
 
-const rootDir=require('../helper/path');
+const productController=require('../controllers/contacts');
 
-router.get('/',(req,res,next)=>{
-    console.log('In another middleware');
-    res.sendFile(path.join(rootDir,'views','contact.html'));
-})
+router.get('/',productController.getForm);
 
-router.post('/',(req,res,next)=>{
-    res.redirect('/success');
-})
+router.post('/',productController.postForm);
 
 module.exports=router;
