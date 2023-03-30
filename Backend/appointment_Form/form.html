@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        body{
+           text-align: center;
+        }
+
+        form{
+            background-color: white;
+            align-items: center;
+            display: inline-block;
+            width: 90%;
+        }
+        button{
+            background-color: orange;
+        }
+        h1{
+            background-color:white;
+            color:orange;
+        }
+    </style>
+</head>
+<body>
+    
+        <div id="sid">
+        <form action="" onsubmit="userDetails(event)">
+            <h1>Book a Call</h1>
+            <label>Name:</label><br>
+            <input type="text" name="name" id="name" class="form-control"><br><br>
+            <label>Email:</label><br>
+            <input type="text" name="email" id="email"class="form-control"><br><br>
+            <label>Phone:</label><br>
+            <input type="number" name="number" id="number" class="form-control"><br><br>
+            <button type="submit">Get a Call</button>
+            
+        
+
+        </form>
+        <h1 id="details">Form Details</h1>
+        <h1 id="end">End of form</h1>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+            function userDetails(event){
+            event.preventDefault();
+            const name=event.target.name.value;
+            const email=event.target.email.value;
+            const phone=event.target.number.value;
+
+            const obj={
+                name,
+                email,
+                phone
+            }
+            axios.post('http://localhost:4000/form/post',obj)
+            .then((response)=>{
+                showNewUser(response.data.newUserDetail);
+            })
+            .catch((err)=>{
+                document.body.innerHTML=document.body.innerHTML+"<h4>Something Wrong</h4>";
+            })
+          }
+          window.addEventListener('DOMContentLoaded',async()=>{
+            try{
+            const response=await axios.get('http://localhost:4000/form')
+            console.log(response);
+            for(var i=0;i<response.data.AllUsers.length;i++){
+                    showNewUser(response.data.AllUsers[i]);
+            }
+            }catch(err){
+                console.log(err);
+            }
+        })
+        function showNewUser(obj){
+            var li=document.createElement('li');
+            li.textContent=obj.name+' - '+obj.email+' - '+obj.phone+' ';
+            deletebtn=document.createElement('button');
+            deletebtn.className='btn btn-primary';
+            deletebtn.textContent='Delete'
+            deletebtn.width='100%'
+            deletebtn.onclick=(e)=>{
+                if(confirm('Are you sure to delete')){
+                        var li=e.target.parentElement;
+                        li.remove();
+                        axios.delete(`http://localhost:4000/form/delete/${obj.id}`,obj).then(res=>console.log('deleted')).catch(err=>console.log(err));
+                }
+            }
+
+            
+            li.appendChild(deletebtn);
+            
+            document.getElementById('name').value='';
+            document.getElementById('email').value='';
+            document.getElementById('number').value='';
+
+            var h2=document.getElementById('end');
+            
+            sid.insertBefore(li,h2);
+        }      
+    </script>
+    </body>
+    </html>
+    
