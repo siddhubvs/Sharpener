@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>Todo Application</title>
+</head>
+<body>
+    <h1>TODO Application</h1>
+    <div id="Things">
+    <form action='' onsubmit='print(event)'>
+        <label>ItemName</label>
+        <input type="text" name="name" id="name">
+        <label>Item Description</label>
+        <textarea name="description" id="description"></textarea>
+        <button type="submit">Add Item</button>
+    </form>
+    <h1 id="todo">Todos Remaining</h1>
+    
+    <h1 id="done">Todos done</h1>
+    
+    <h1 id="end">Do Things quickly</h1>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+       async function print(event){
+        
+            event.preventDefault();
+            let obj={
+                name:event.target.name.value,
+                description:event.target.description.value,
+            }
+            try{
+            const response=await axios.post('http://localhost:4000/todo/post',obj);
+            showNewUser(response.data.newTodo);
+            }
+            catch(err){
+                console.log(err);
+                document.body.innerHTML=document.body.innerHTML+'<h4>Something went wrong</h4';
+            } 
+       }
+       window.addEventListener('DOMContentLoaded',async()=>{
+            try{
+            const response=await axios.get('http://localhost:4000/todo')
+            console.log(response);
+            for(var i=0;i<response.data.AllTodoDetail.length;i++){
+                    showNewUser(response.data.AllTodoDetail[i]);
+            }
+            }catch(err){
+                console.log(err);
+            }
+        })
+       
+       var done=document.getElementById('done');
+       var end=document.getElementById('end');
+       var div=document.getElementById('Things');
+       
+       
+        function showNewUser(obj){
+        var li=document.createElement('li');
+        li.className='list-group-item'
+        li.style.color='blue';
+        li.style.fontSize='30px';
+        li.textContent=obj.name+' - ' +obj.description+ '   ';
+        var Donebtn=document.createElement('button');
+        Donebtn.className='btn btn-primary';
+        Donebtn.textContent='Done'
+        Donebtn.width='100%'
+        Donebtn.onclick=async (e)=>{
+                try{
+                if(confirm('Are you sure Task is Done')){
+                        var li=e.target.parentElement;
+                        donetask(obj);
+                        li.remove();
+                        
+                }
+                }
+                catch(err){
+                  console.log(err);
+                }
+            }
+            var deletebtn=document.createElement('button');
+            deletebtn.className='btn btn-primary';
+            deletebtn.textContent='Delete'
+            deletebtn.width='100%'
+            deletebtn.onclick=async (e)=>{
+                try{
+                if(confirm('Are you sure to delete')){
+                        var li=e.target.parentElement;
+                        li.remove();
+                        const response=await axios.delete(`http://localhost:4000/todo/delete/${obj.id}`,obj);
+                        console.log(response);
+                }
+                }
+                catch(err){
+                  console.log(err);
+                }
+            }
+            li.appendChild(Donebtn);
+            li.appendChild(deletebtn);
+            
+            div.insertBefore(li,done)
+        }
+        
+        function donetask(obj){
+        var li=document.createElement('li');
+        li.className='list-group-item'
+        li.style.color='blue';
+        li.style.fontSize='30px';
+        li.textContent=obj.name+' - ' +obj.description+ '   ';
+        div.insertBefore(li,end)
+        }
+
+       
+</script>
+</html>
